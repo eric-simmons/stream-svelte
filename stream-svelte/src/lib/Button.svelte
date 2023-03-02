@@ -5,9 +5,9 @@
     export let textColor = "inherit";
 
     let isLeftHovered;
-    console.log($$restProps);
+    // console.log($$restProps);
     //can use slot for conditionals
-    console.log($$slots);
+    // console.log($$slots);
 </script>
 
 <button

@@ -4,7 +4,10 @@
 <script>
   import TodoList from "./lib/TodoList.svelte";
   import { v4 as uuid } from "uuid";
+  import { tick } from "svelte";
 
+  let todoList;
+  let showList = true;
   let todos = [
     {
       id: uuid(),
@@ -23,8 +26,10 @@
     },
   ];
 
-  function handleAddTodo(event) {
-    // event.preventDefault()
+  async function handleAddTodo(event) {
+    event.preventDefault();
+    //set timeout would simulating clearing input only after fetch of some kind
+    console.log(document.querySelectorAll(".todo-list ul li"));
     todos = [
       ...todos,
       {
@@ -33,6 +38,9 @@
         completed: false,
       },
     ];
+    await tick()
+    console.log(document.querySelectorAll(".todo-list ul li"));
+    todoList.clearInput();
   }
   function handleRemoveTodo(event) {
     todos = todos.filter((todo) => todo.id !== event.detail.id);
@@ -50,12 +58,22 @@
   }
 </script>
 
-<TodoList
-  {todos}
-  on:addtodo={handleAddTodo}
-  on:removetodo={handleRemoveTodo}
-  on:toggletodo={handleToggleTodo}
-/>
+<label>
+  <input type="checkbox" bind:checked={showList} />
+  Show/Hide List
+</label>
+
+{#if showList}
+  <div style:max-width="200px">
+    <TodoList
+      {todos}
+      bind:this={todoList}
+      on:addtodo={handleAddTodo}
+      on:removetodo={handleRemoveTodo}
+      on:toggletodo={handleToggleTodo}
+    />
+  </div>
+{/if}
 
 <style>
 </style>
