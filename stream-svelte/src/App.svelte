@@ -1,3 +1,6 @@
+<!-- immutable true means when we update components we MUST pass new data, not a mutated version of the same data. it will take the guess off of svelte so it doesnt have to check if the component needs to be recreated.  -->
+<svelte:options immutable={true} />
+
 <script>
   import TodoList from "./lib/TodoList.svelte";
   import { v4 as uuid } from "uuid";
@@ -20,13 +23,39 @@
     },
   ];
 
-function handleAddTodo(event){
-  console.log(event.detail.title)
-}
+  function handleAddTodo(event) {
+    // event.preventDefault()
+    todos = [
+      ...todos,
+      {
+        id: uuid(),
+        title: event.detail.title,
+        completed: false,
+      },
+    ];
+  }
+  function handleRemoveTodo(event) {
+    todos = todos.filter((todo) => todo.id !== event.detail.id);
+  }
+  function handleToggleTodo(event) {
+    todos = todos.map((todo) => {
+      if (todo.id === event.detail.id) {
+        return {
+          ...todo,
+          completed: event.detail.value,
+        };
+      }
+      return { ...todo };
+    });
+  }
 </script>
 
-
-<TodoList {todos} on:addtodo ={handleAddTodo} />
+<TodoList
+  {todos}
+  on:addtodo={handleAddTodo}
+  on:removetodo={handleRemoveTodo}
+  on:toggletodo={handleToggleTodo}
+/>
 
 <style>
 </style>
