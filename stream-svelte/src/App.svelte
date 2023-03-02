@@ -4,32 +4,35 @@
 <script>
   import TodoList from "./lib/TodoList.svelte";
   import { v4 as uuid } from "uuid";
-  import { tick } from "svelte";
+  import { tick, onMount } from "svelte";
 
   let todoList;
   let showList = true;
-  let todos = [
-    {
-      id: uuid(),
-      title: "Todo 1",
-      completed: true,
-    },
-    {
-      id: uuid(),
-      title: "Todo 2",
-      completed: false,
-    },
-    {
-      id: uuid(),
-      title: "Todo 3",
-      completed: false,
-    },
-  ];
+  let todos = null;
+  let error = null;
+  let isLoading = false;
+  onMount(() => {
+    loadTodos();
+  });
+
+  async function loadTodos() {
+    isLoading = true;
+    await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10").then(
+      async (response) => {
+        if (response.ok) {
+          todos = await response.json();
+        } else {
+          error = "An Error has occured";
+        }
+      }
+    );
+    isLoading = false;
+  }
 
   async function handleAddTodo(event) {
     event.preventDefault();
     //set timeout would simulating clearing input only after fetch of some kind
-    console.log(document.querySelectorAll(".todo-list ul li"));
+
     todos = [
       ...todos,
       {
@@ -38,8 +41,8 @@
         completed: false,
       },
     ];
-    await tick()
-    console.log(document.querySelectorAll(".todo-list ul li"));
+    await tick();
+
     todoList.clearInput();
   }
   function handleRemoveTodo(event) {
@@ -64,9 +67,11 @@
 </label>
 
 {#if showList}
-  <div style:max-width="200px">
+  <div style:max-width="400px">
     <TodoList
       {todos}
+      {error}
+      {isLoading}
       bind:this={todoList}
       on:addtodo={handleAddTodo}
       on:removetodo={handleRemoveTodo}
