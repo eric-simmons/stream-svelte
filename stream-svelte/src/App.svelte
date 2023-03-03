@@ -8,6 +8,7 @@
   import { fade, fly, slide, blur } from "svelte/transition";
   import { cubicInOut } from "svelte/easing";
   import spin from "./lib/transitions/spin"
+// import fade from "./lib/transitions/fade"
 
   let todoList;
   let showList = true;
@@ -115,7 +116,7 @@
 </label>
 
 {#if showList}
-  <div transition:spin={{spin: 100, duration:4000}} style:max-width="400px">
+  <div transition:spin={{spin: 100, duration:4000}} style:max-width="800px">
     <TodoList
       {todos}
       {isAdding}
