@@ -3,6 +3,7 @@ import { readable } from "svelte/store"
 
 const location = readable(null, (set) => {
     let watchId
+    //could handle case of having geolocation but not watchposition?
     if (navigator.geolocation && navigator.geolocation.watchPosition) {
         watchId = navigator.geolocation.watchPosition(
             (position) => {

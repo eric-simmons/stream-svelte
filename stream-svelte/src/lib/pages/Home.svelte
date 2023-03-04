@@ -6,7 +6,7 @@
 </script>
 
 <h2>Home</h2>
-
+<!-- remember $ is to access/update global score with unsubscribe -->
 {#if $location}
     {$location.latitude}, {$location.longitude}
 {/if}
