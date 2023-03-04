@@ -1,6 +1,11 @@
 :root {
     --buttonBgColor: orange;
     --buttonTextColor: white;
-    background-color: rgb(87, 48, 48);
-    color:rgb(231, 142, 104)
+}
+
+body {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+    font-family: 'Bodoni Moda', serif;
+    font-family: 'Roboto', sans-serif;
 }
