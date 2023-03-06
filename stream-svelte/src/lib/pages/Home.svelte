@@ -1,13 +1,55 @@
 <script>
-    import { onDestroy } from "svelte";
+    import { tweened } from "svelte/motion";
+    import { cubicOut } from "svelte/easing";
 
-    import settings from "../stores/settings";
-    import location from "../stores/location";
+
+    const scale = tweened(1, {
+        duration: 1500,
+        easing: cubicOut,
+    });
 </script>
 
-<h2>Home</h2>
-<!-- remember $ is to access/update global score with unsubscribe -->
-{#if $location}
-    {$location.latitude}, {$location.longitude}
-{/if}
-{$settings.colorScheme}
+<button
+    on:click={() => {
+        $scale += 1;
+    }}
+>
+    Bigger
+</button>
+<button
+    on:click={() => {
+        $scale -= 1;
+    }}>Smaller</button
+>
+
+<div
+    style="width: 100px;
+height: 100px;
+background-color: green;
+transform: scale({$scale});
+transform-origin: 0 0 "
+/>
+
+<div
+    style="width: 125px;
+height: 125px;
+background-color: blue;
+transform: scale({$scale});
+transform-origin: 0 0 "
+/>
+
+<div
+    style="width: 150px;
+height: 150px;
+background-color: red;
+transform: scale({$scale});
+transform-origin: 0 0 "
+/>
+
+<div
+    style="width: 175px;
+height: 175px;
+background-color: purple;
+transform: scale({$scale});
+transform-origin: 0 0 "
+/>
